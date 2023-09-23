@@ -209,3 +209,16 @@
   margin-top: 11px;
   margin-bottom: 15px;
 }
+
+.qty-input {
+  width: 30px;
+  display: none;
+}
+
+.save-qty-link, .hide-update-btn {
+  display: none;
+}
+
+.is-editing-qty {
+  display: initial;
+}
