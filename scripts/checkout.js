@@ -165,6 +165,8 @@ function renderCheckoutDisplay(){
     checkoutDisp.innerHTML = `1 item`;
   else if(totalCheckedOutItems > 1)
     checkoutDisp.innerHTML = `${totalCheckedOutItems} items`;
+
+  calculateOrder();
 }
 
 function isQtyInputValid(qtyInput){
@@ -173,4 +175,41 @@ function isQtyInputValid(qtyInput){
   }
   return false;
 
+}
+
+function calculateOrder(){
+
+  const itemCntSumLbl = document.querySelector('.js-item-count-lbl');  
+  itemCntSumLbl.innerHTML = `Items (${countCheckoutItems()})`;
+
+  const itemTotalSumLbl = document.querySelector('.js-item-total-lbl');
+  let totalSum = 0;
+  let totalShippingFee = 0;
+
+  cart.forEach((item) => {
+    products.forEach((product) => {
+      if(item.productId === product.id){
+        totalSum += product.priceCents * item.quantity;
+        totalShippingFee += 115;
+      }
+    });
+  });
+  itemTotalSumLbl.innerHTML = `$${(totalSum / 100).toFixed(2)}`;
+
+  const shippingFeeLbl = document.querySelector('.js-shipping-fee-lbl');
+  shippingFeeLbl.innerHTML = `$${totalShippingFee / 100}`;
+
+  const itemNoTaxLbl = document.querySelector('.js-item-notax-lbl');
+  let withShippingFee = totalSum + totalShippingFee;
+  itemNoTaxLbl.innerHTML = `$${withShippingFee / 100}`;
+
+  const itemTaxSumLbl = document.querySelector('.js-tax-lbl');
+  let rate = 0.1;
+  let tax = withShippingFee * rate;
+  itemTaxSumLbl.innerHTML = `$${(tax / 100).toFixed(2)}`;
+
+  const orderTotalSumLbl = document.querySelector('.js-order-total-lbl');
+  let totalWShipAndTax = (withShippingFee + tax) / 100;
+  orderTotalSumLbl.innerHTML = `$${(totalWShipAndTax).toFixed(2)}`;
+  
 }
