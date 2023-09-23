@@ -50,3 +50,14 @@ export function removeFromCart(productId){
 function saveToStorage(){
   localStorage.setItem('cart', JSON.stringify(cart));
 }
+
+export function countCheckoutItems(){
+
+  let totalCheckedOutItems = 0;
+
+  cart.forEach((cartItem) => {
+    totalCheckedOutItems += cartItem.quantity;
+  });
+
+  return totalCheckedOutItems;
+}

@@ -1,4 +1,4 @@
-import { cart, removeFromCart } from "../data/cart.js";
+import { cart, removeFromCart, countCheckoutItems } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
@@ -98,6 +98,8 @@ cart.forEach((cartItem) => {
     });
 });
 
+renderCheckoutDisplay();
+
 const orderSummary = document.querySelector('.js-order-summary');
 orderSummary.innerHTML = cartSummmaryHTML;
 
@@ -106,8 +108,22 @@ deleteQtyBtns.forEach((link) => {
   link.addEventListener('click', () => {
     const productId = link.dataset.productId;
     removeFromCart(productId);
+    renderCheckoutDisplay();
 
     const itemToBeRemoved = document.querySelector(`.js-cart-item-container-${productId}`);
     itemToBeRemoved.remove();
   });
 });
+
+function renderCheckoutDisplay(){
+  const checkoutDisp = document.querySelector('.js-checkout-disp');
+
+  let totalCheckedOutItems = countCheckoutItems();
+
+  if(totalCheckedOutItems === 0)
+    checkoutDisp.innerHTML = `No item`;
+  else if(totalCheckedOutItems === 1)
+    checkoutDisp.innerHTML = `1 item`;
+  else if(totalCheckedOutItems > 1)
+    checkoutDisp.innerHTML = `${totalCheckedOutItems} items`;
+}
